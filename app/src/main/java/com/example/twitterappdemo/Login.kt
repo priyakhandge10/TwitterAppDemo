@@ -23,6 +23,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class Login : AppCompatActivity() {
@@ -41,6 +42,7 @@ class Login : AppCompatActivity() {
             checkPermission()
 
         })
+
     }
 
 
@@ -68,9 +70,6 @@ class Login : AppCompatActivity() {
         val dateObj=Date()
         val imagePath=splitString(email) + "." + df.format(dateObj)+".png"
         val imageRef=storageRef.child("images/$imagePath")
-        //ivimageperson.isDrawingCacheEnabled=true
-        //ivimageperson.buildDrawingCache()
-
         val drawable= ivimageperson.drawable as BitmapDrawable
         val bitmap=drawable.bitmap
         val baos=ByteArrayOutputStream()
@@ -82,7 +81,7 @@ class Login : AppCompatActivity() {
 
         }.addOnSuccessListener { taskSnapshot ->
 
-            var downloadURL=taskSnapshot.storage.downloadUrl!!.toString()!!
+            var downloadURL=taskSnapshot.storage.downloadUrl.toString()
 
             myRef.child("users").child(currentUser.uid).child("email").setValue(currentUser.email)
             myRef.child("users").child(currentUser.uid).child("profileImage").setValue(downloadURL)
@@ -199,7 +198,7 @@ class Login : AppCompatActivity() {
         }
     }
 
-    fun buLogin(view: View){
+    fun buLogin(@Suppress("UNUSED_PARAMETER")view: View){
 
         loginTOFirebase(etEmail.text.toString(), etEmail.text.toString())
     }
